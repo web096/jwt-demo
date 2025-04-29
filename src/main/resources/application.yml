@@ -1,0 +1,63 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: jwt-demo
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      connection-test-query: "SELECT 1"
+      max-lifetime: 600000
+      idle-timeout: 600000
+  sql:
+    init:
+      encoding: UTF-8
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy #camel case를 underscore형태로 변경(논리(설명))
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy #camel case를 underscore형태로 변경(물리(영문,테이블명))
+      ddl-auto: none
+    generate-ddl: false
+    properties:
+      hibernate:
+        id.new_generator_mappings: false #기본키 전략 false : auto_increment / true: Sequence(table Generator)
+        globally_quoted_identifiers: true #sql문이 실행될때, 틸트(`)로 테이블과 컬럼을 자동으로 감싸준다.(예약어 충돌 방지)
+        hbm2ddl:
+          auto: none
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true # SQL를 예쁘게 출력해준다.
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+
+security:
+  jwt:
+    token:
+      key: ${JWT_SECURITY_KEY}
+      expire: 300000 #300000(5*60*1000) 5분
+      refreshExpire: 86400000 #86400000(1*24*60*60*1000) 24시간(1일)
+
+logging:
+  config: "classpath:logback-spring.xml"
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [%X{traceId}] %msg%n"
+  level:
+    org.apache.tomcat: info
+    org.hibernate.hql: off
+    com.zaxxer.hikari: off
+    org.springframework.orm.jpa: off
+    org.apache.coyote.http11.Http11Processor: off
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+  http2:
+    enabled: true
+  port: 8080
+  servlet:
+    context-path: /

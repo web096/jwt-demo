@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+  output:
+    ansi:
+      enabled: always
+  config:
+    activate:
+      on-profile: local
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+      timeout: 5000
+      lettuce:
+        pool:
+          max-active: 5     # 동시에 사용할 수 있는 최대 커넥션 수
+          max-idle: 5       # 최대 유휴 커넥션 수
+          min-idle: 1       # 최소 유휴 커넥션 수
+          max-wait: 2000   # 커넥션 풀이 다 찼을 때 최대 대기 시간(ms)
+
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    displayRequestDuration: true
+    groups-order: DESC
+    server: http://localhost:8080
+    description: Local Server
+  paths-to-match: /v1/**
+
+logging:
+  config: "classpath:logback-local.xml"
+  level:
+    # HTTP Request 정보 출력
+    org.springframework.web.filter.CommonsRequestLoggingFilter: debug
+    org.springframework.web.reactive.function.client.ExchangeFunctions: debug
+    com.trace.id.demo: debug
+    org.hibernate.dialect: off
+    org.hibernate.type.BasicTypeRegistry: warn
+
+server:
+  port: 8080
