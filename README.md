@@ -17,7 +17,11 @@
 | RefreshToken | 자동 로그인, AccessToken 재발급용 | 김 (30~90일) | 만료되면 자동 로그인 불가 |
 
 ---
-
+## 🔑 JWT 키 생성
+```
+openssl rand -base64 64
+```
+---
 ## 🛡️ AccessToken & RefreshToken jti 관리
 
 - AccessToken과 RefreshToken은 **서로 다른 jti(UUID)** 를 가진다.
