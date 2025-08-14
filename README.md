@@ -85,6 +85,18 @@ Redis 세션 삭제
 - **AccessToken과 RefreshToken jti 분리 관리**
 - **만료된 AccessToken에서도 Claims 추출 허용 (reissue를 위한)**
 - **로그아웃 시 모든 세션 클린업**
+- **CSRF 공격 방지 대책(Authorization: Bearer 헤더)**
+
+---
+## 🧩 실서비스 구현 시 고려사항
+- **XSS 보안정책 HttpOnly + Secure 적용 필요**
+- **CSRF 방어 메커니즘 추가 필요**
+```
+1. Double Submit Cookie
+2. SameSite=Lax or Strict
+3. CSRF Token 헤더 검증
+```
+- **CSP, XFO, X-Content-Type-Options 등 적용**
 
 ---
 
